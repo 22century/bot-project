@@ -1,25 +1,24 @@
-bot-project
+にせBOT
 ===========
 
-**にせBOT**
 
 PHP 5.4以上 node 0.10以上 MySQL または MariaDB それなりに新しいの
 
 nodemodule入れてね。
 
 ```
+$ cd bot-project  
 $ npm install  
 ```
 
 schemeのsql流してね。  
-```
-mysql -u ***** -p ***** nise_bot < scheme/nise_bot.sql
-```
 
+```
+$ mysql -u ***** -p ***** nise_bot < scheme/nise_bot.sql
+```
 
 既存の発言拾ってね。
 ```
-$ cd bot-project  
 $ php nise_bot/main.php botname upstream  
 $ php nise_bot/main.php botname migration  
 ```
@@ -43,3 +42,12 @@ async_stream - nodeのユーザーストリーム監視起動
 **使うのに登録が必要なもの**  
 TwitterAPI - https://dev.twitter.com  
 Yahoo!日本語形態素解析API - http://developer.yahoo.co.jp/webapi/jlp/ma/v1/parse.html
+
+**事例**  
+https://twitter.com/nise_ajipo  
+https://twitter.com/nise_xenop  
+https://twitter.com/nise_22century  
+https://twitter.com/iucidonn  
+https://twitter.com/nise_moroya  
+
+
