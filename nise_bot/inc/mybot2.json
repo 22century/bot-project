@@ -1,0 +1,20 @@
+{
+    "ID"          : 2,
+    "DEBUG"       : false,
+    "SCREEN_NAME" : "mybotname",
+    "ORIGIN_NAME" : "myname",
+    "NAME"        : "",
+    "SEARCH_VAL"  : "緒方達郎",
+    "USE_SEARCH"  : false,
+    "SUFFIX"      : "…",
+
+    "KEY" : {
+        "consumer_key"        : "",
+        "consumer_secret"     : "",
+        "access_token"        : "",
+        "access_token_secret" : ""
+    },
+
+    "ASSETS" : [],
+    "REACTS" : []
+}

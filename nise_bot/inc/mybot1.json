@@ -1,0 +1,30 @@
+{
+    "ID"          : 1,
+    "DEBUG"       : false,
+    "SCREEN_NAME" : "BOTのアカウントscreen_name",
+    "ORIGIN_NAME" : "本物のアカウントscreen_name",
+    "NAME"        : "使ってなかった気がする",
+    "SEARCH_VAL"  : "任意の検索クエリ（空でもいい）",
+    "USE_SEARCH"  : false, ← 発言取得でSearchAPIを使うかどうか（あじぽくんのブロック対策）
+    "SUFFIX"      : "140字超えた時にぶった切る文字列",
+
+    "KEY" : {
+        "consumer_key"        : "twitter apiのキー1",
+        "consumer_secret"     : "twitter apiのシークレットキー",
+        "access_token"        : "twitter apiのトークン",
+        "access_token_secret" : "twitter apiのシークレットトークン"
+    },
+
+    "ASSETS" : [
+        "ここは定型文が入ります",
+        "黒田bb is god...",
+        "{0}{1}などを入れるとそこに名詞が入ります",
+        "{0}したい… {0}したくない…？",
+        "{0}と{1}で踏める"
+    ],
+    "REACTS" : [
+        "ここで反応ワードを指定します",
+        "蘭ちゃん",
+        "セイラ"
+    ]
+}
