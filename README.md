@@ -19,6 +19,7 @@ schemeのsql流してね。
 ```
 $ cd bot-project  
 $ php nise_bot/main.php botname upstream  
+$ php nise_bot/main.php botname migration  
 ```
 
 **config/**  
