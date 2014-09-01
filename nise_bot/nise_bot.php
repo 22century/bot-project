@@ -483,6 +483,8 @@ class NiseBot
             }
         }
 
+        // var_dump($data);
+
         foreach ($data as $datam) {
 
             if (F::is_not_word($datam['prefix']['surface'], $datam['prefix']['pos'] === '名詞')) {

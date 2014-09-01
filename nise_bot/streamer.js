@@ -71,8 +71,8 @@ Streamer.prototype = {
                 // 本人
                 if (tweet['user']['screen_name'] === SETTING['ORIGIN_NAME']) {
                     // 診断
-                    if (streamer.hasShindanUrl(text)) {
-                        streamer.execPhp('shindan', streamer.getShindanId(text));
+                    if (streamer.hasShindanUrl(tweet)) {
+                        streamer.execPhp('shindan', streamer.getShindanId(tweet));
                     }
                 }
             });
@@ -116,25 +116,36 @@ Streamer.prototype = {
 
     /**
      * 診断メーカー
-     * @param {string} text
+     * @param {object} tweet
      * @returns {boolean}
      */
-    hasShindanUrl: function (text) {
-        return text.indexOf('shindanmaker.com') !== -1;
+    hasShindanUrl: function (tweet) {
+        if (typeof tweet.entities.urls === 'undefined' || tweet.entities.urls.length <= 0) return false;
+
+        return tweet.entities.urls.some(function(obj){
+            return obj.expanded_url.indexOf('shindanmaker.com') !== -1
+        });
     },
 
     /**
      * 診断メーカーID
-     * @param {string} text
+     * @param {object} tweet
      * @returns {string}
      */
-    getShindanId: function (text) {
-        var m = text.match(/shindanmaker\.com\/([\d]+)/)||[];
-        if (m.length > 0) {
-            return m[1];
-        } else {
-            return null;
-        }
+    getShindanId: function (tweet) {
+        var id = null;
+        tweet.entities.urls.some(function(obj){
+            if (obj.expanded_url.indexOf('shindanmaker.com') !== -1) {
+                var m = obj.expanded_url.match(/shindanmaker\.com\/([\d]+)/)||[];
+                if (m.length > 0) {
+                    id = m[1];
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+        return id;
     },
 
     /**
