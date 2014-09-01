@@ -1,0 +1,11 @@
+{
+  "name": "bot-project",
+  "version": "0.0.1",
+  "devDependencies": {
+    "twit": "^1.1.13",
+    "xml2js": "^0.4.2",
+    "simply-deferred": "^3.0.0",
+    "q": "^1.0.1",
+    "sugar": "^1.4.1"
+  }
+}
