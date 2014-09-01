@@ -3,7 +3,7 @@
     "DEBUG"       : false,
     "SCREEN_NAME" : "BOTのアカウントscreen_name",
     "ORIGIN_NAME" : "本物のアカウントscreen_name",
-    "NAME"        : "使ってなかった気がする",
+    "NAME"        : "日本語名（あってもいいしなくてもいい）",
     "SEARCH_VAL"  : "任意の検索クエリ（空でもいい）",
     "USE_SEARCH"  : false, ← 発言取得でSearchAPIを使うかどうか（あじぽくんのブロック対策）
     "SUFFIX"      : "140字超えた時にぶった切る文字列",

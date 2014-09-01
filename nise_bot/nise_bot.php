@@ -299,7 +299,7 @@ class NiseBot
      * @param string $id
      */
     public function task_shindan ($id) {
-        $paste_text = F::shindan_maker($id, $this->SETTING->NAME_JP);
+        $paste_text = F::shindan_maker($id, $this->SETTING->NAME ?: $this->SETTING->SCREEN_NAME);
         if (!$paste_text) return;
         // 発言
         $this->send_tweet($paste_text);
