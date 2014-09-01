@@ -9,6 +9,9 @@ $ npm install してね。
 
 schemeのsql流してね。  
 
+cd bot-project
+php nise_bot/main.php botname upstream
+
 * config/  
 DBの接続情報入れる
 
