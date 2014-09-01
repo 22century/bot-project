@@ -5,12 +5,17 @@ bot-project
 
 PHP 5.4以上 node 0.10以上 MySQL または MariaDB それなりに新しいの
 
+nodemodule入れてね。
+
 ```
 $ npm install  
 ```
 
 schemeのsql流してね。  
 
+
+
+既存の発言拾ってね。
 ```
 $ cd bot-project  
 $ php nise_bot/main.php botname upstream  
