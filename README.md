@@ -12,7 +12,9 @@ $ npm install
 ```
 
 schemeのsql流してね。  
-
+```
+mysql -u ***** -p ***** nise_bot < scheme/nise_bot.sql
+```
 
 
 既存の発言拾ってね。
