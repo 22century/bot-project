@@ -5,7 +5,9 @@ bot-project
 
 PHP 5.4以上 node 0.10以上 MySQL または MariaDB それなりに新しいの
 
-$ npm install してね。
+$ npm install してね。  
+
+schemeのsql流してね。  
 
 * config/  
 DBの接続情報入れる
