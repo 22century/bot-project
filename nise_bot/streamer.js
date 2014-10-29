@@ -7,7 +7,8 @@ var SETTING, twit,
     PATTERNS = {
         YO: null,
         REPLY: null
-    };
+    },
+    NAME = '';
 
 var streamer, Streamer = function () {
     this.initialize.apply(this, arguments);
@@ -17,9 +18,14 @@ var streamer, Streamer = function () {
 Streamer.prototype = {
 
     initialize: function (name) {
-        SETTING = require('./inc/' + name + '.json');
+        NAME = name;
+        SETTING = require('./inc/' + NAME + '.json');
         PATTERNS.REPLY = new RegExp('^@' + SETTING['SCREEN_NAME'] + '[\\s\\S]*$', 'mi');
         PATTERNS.YO = new RegExp('^@' + SETTING['SCREEN_NAME'] + '[\\s]+yo(?:[\\s]|$)', 'i');
+
+        if (!(SETTING['ORIGIN_NAME'] instanceof Array)) {
+            SETTING['ORIGIN_NAME'] = [ SETTING['ORIGIN_NAME'] ];
+        }
 
         twit = new Twit({
             'consumer_key'        : SETTING['KEY']['consumer_key'],
@@ -43,7 +49,7 @@ Streamer.prototype = {
 
                 // たまに壊れたデータが入ってくる
                 if (typeof tweet.user === 'undefined' || typeof tweet.user.screen_name === 'undefined') {
-                    console.error('user: undefined.');
+                    streamer.log('user: undefined.');
                     console.error(typeof tweet);
                     console.error(tweet);
                     return;
@@ -51,12 +57,12 @@ Streamer.prototype = {
 
                 // RT
                 if (streamer.isRT(tweet)) {
-                    console.log('RT');
+                    // console.log('RT');
                     return;
                 }
                 // リプライ
                 if (streamer.isReply(text)) {
-                    console.log('Reply');
+                    streamer.log('reply');
                     var react;
                     // YO
                     if (streamer.isYo(text)) {
@@ -69,7 +75,7 @@ Streamer.prototype = {
                     return;
                 }
                 // 本人
-                if (tweet['user']['screen_name'] === SETTING['ORIGIN_NAME']) {
+                if (SETTING['ORIGIN_NAME'].indexOf(tweet['user']['screen_name']) !== -1) {
                     // 診断
                     if (streamer.hasShindanUrl(tweet)) {
                         streamer.execPhp('shindan', streamer.getShindanId(tweet));
@@ -102,8 +108,8 @@ Streamer.prototype = {
      */
     execPhp: function (var_args) {
         var args = Array.prototype.slice.call(arguments),
-            command = 'php nise_bot/main.php ' + SETTING['ORIGIN_NAME'] + ' ' + args.join(' ');
-        console.log('command:', command);
+            command = 'php nise_bot/main.php ' + NAME + ' ' + args.join(' ');
+        streamer.log('command:', command);
 
         setTimeout(function(){
             exec(command, function (err, stdout, stderr) {
@@ -174,6 +180,13 @@ Streamer.prototype = {
         });
 
         return word;
+    },
+
+    /**
+     * logger
+     */
+    log: function (str) {
+        console.log(SETTING['SCREEN_NAME'], str);
     }
 
 };

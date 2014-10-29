@@ -11,12 +11,15 @@ class NiseBot
     private $SETTING = [];
     private $SPECIAL_NAMES = [];
     private $LIMIT_DATETIME = '';
+    private $start_time = 0;
 
     public function __construct ($bot_name) {
 
         echo "--------------------------------------------------\n"
             . "| ↓↓↓ はじまるよ ↓↓↓\n"
             . "--------------------------------------------------\n\n";
+
+        $this->start_time = ceil( microtime(true) * 1000 );
 
         $path = __DIR__ . "/inc/{$bot_name}.json";
 
@@ -26,6 +29,11 @@ class NiseBot
 
         $json = file_get_contents($path);
         $this->SETTING = json_decode($json);
+
+        // 監獄対応
+        if (!is_array($this->SETTING->ORIGIN_NAME)) {
+            $this->SETTING->ORIGIN_NAME = [$this->SETTING->ORIGIN_NAME];
+        }
 
         $this->LIMIT_DATETIME = F::mysql_datetime(time() - F::day_time(60));
 
@@ -46,6 +54,9 @@ class NiseBot
     }
 
     public function __destruct () {
+
+        echo "time: " . ( ceil( microtime(true) * 1000 ) - $this->start_time ) . "\n";
+
         echo "\n--------------------------------------------------\n"
            . "| ↑↑↑ おわりだよ ↑↑↑\n"
            . "--------------------------------------------------\n";
@@ -60,7 +71,11 @@ class NiseBot
         $this->update_favorites();
 
         // 発言更新
-        $tl = $this->get_timeline($this->SETTING->ORIGIN_NAME);
+        $tl = [];
+        foreach ($this->SETTING->ORIGIN_NAME as $name) {
+            $tl = array_merge($tl, $this->get_timeline($name));
+        }
+
         $len = $this->update_statuses($tl);
 
         echo "refresh count: {$len}\n";
@@ -143,10 +158,9 @@ class NiseBot
 
         echo "befor: {$origin_text}\n";
 
-        if ($this->SETTING->ORIGIN_NAME === 'lucidonn') {
+        if (in_array('lucidonn', $this->SETTING->ORIGIN_NAME)) {
             $my_text = $this->get_message_lucidonn($origin_text);
-        }
-        else {
+        } else {
             $my_text = $this->get_message($origin_text);
         }
 
@@ -340,34 +354,36 @@ class NiseBot
      */
     public function task_upstream () {
 
-        $statuses = [];
-        $param = [
-            'screen_name' => $this->SETTING->ORIGIN_NAME,
-            'count'       => 100,
-            'result_type' => 'recent',
-        ];
+        foreach ($this->SETTING->ORIGIN_NAME as $name)
+        {
+            $statuses = [];
+            $param = [
+                'screen_name' => $name,
+                'count'       => 100,
+                'result_type' => 'recent',
+            ];
 
-        $max_id = null;
-        $loop = 0;
+            $max_id = null;
+            $loop = 0;
 
-        do {
-            if ($max_id !== null) $param['max_id'] = $max_id;
-            $timeline = $this->T->user_timeline($param);
-            //var_dump($timeline);
-            if ($timeline) {
-                $statuses = array_merge($statuses, $timeline);
-                $last_status = $timeline[ count($timeline) - 1 ];
-                $max_id = $last_status['id_str'];
-                var_dump($timeline[0]['id_str']);
-                var_dump($max_id);
-            }
-            ++$loop;
-            // 1000件
-        } while ($loop < 10);
+            do {
+                if ($max_id !== null) $param['max_id'] = $max_id;
+                $timeline = $this->T->user_timeline($param);
+                if ($timeline) {
+                    $statuses = array_merge($statuses, $timeline);
+                    $last_status = $timeline[ count($timeline) - 1 ];
+                    $max_id = $last_status['id_str'];
+                    echo $timeline[0]['id_str']."\n";
+                    echo $max_id."\n";
+                }
+                ++$loop;
+                // 1000件
+            } while ($loop < 10);
 
-        $count = $this->update_statuses($statuses);
+            $count = $this->update_statuses($statuses);
+            echo 'updated:'.$count.'/'.count($statuses);
+        }
 
-        echo 'updated:'.$count.'/'.count($statuses);
     }
 
     /**
@@ -656,7 +672,7 @@ class NiseBot
                 $befor .= $ma['surface'];
                 if (F::is_splitpos($ma)) {
                     $prefix = $ma['pos'];
-                    $en = F::is_en($ma['surface']);
+                    $en = !is_numeric($ma['surface']) && F::is_en($ma['surface']);
                 } else {
                     $suffix .= $ma['pos'];
                 }
@@ -776,6 +792,9 @@ class NiseBot
      */
     private function mode_bug ($sentence) {
         $ma_map = $this->Y->getSurfaceMap($sentence, $this->SPECIAL_NAMES);
+        if (count($ma_map) <= 0) {
+            return $sentence;
+        }
         $index = mt_rand(0, count($ma_map) - 1);
         $text = '';
         foreach ($ma_map as $i => $ma) {
@@ -800,6 +819,11 @@ class NiseBot
             }
         }
         return $text;
+    }
+
+    private function mode_random_aa () {
+        $rows = Model::findRandStatusMl($this->SETTING->ID);
+        // TODO
     }
 
     /**
