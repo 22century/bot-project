@@ -5,7 +5,7 @@ define('LIB_DIR' , __DIR__. '/../lib');
 define('LOG_DIR' , __DIR__. '/../log');
 define('LOG_FILE', LOG_DIR. '/friendship.txt');
 
-require __DIR__ . '/../config/db.php';
+$db = json_decode(file_get_contents(__DIR__.'/../config/db.json'), true);
 require LIB_DIR . '/paris/idiorm.php';
 require LIB_DIR . '/paris/paris.php';
 require LIB_DIR . '/twitteroauth/twitteroauth.php';
@@ -15,13 +15,13 @@ require LIB_DIR . '/yahooma.php';
 require __DIR__ . '/nise_bot.php';
 require __DIR__ . '/model.php';
 
-$dbname = 'nise_bot';
+var_dump($db);
 
 ORM::configure([
-    'connection_string' => "mysql:host=127.0.0.1;port=3306;dbname={$dbname}",
-    'username' => DB::USER,
-    'password' => DB::PASS,
-    'driver_options' =>  [ PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8' ],
+    'connection_string' => "mysql:host=${db['HOST']};port=${db['PORT']};dbname=${db['DBNAME']}",
+    'username' => $db['USER'],
+    'password' => $db['PASS'],
+    'driver_options' =>  [ PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES ${db['CHARSET']}" ],
     'logging' => true
 ]);
 
