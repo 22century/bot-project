@@ -37,7 +37,7 @@ class NiseBot
 
         $this->LIMIT_DATETIME = F::mysql_datetime(time() - F::day_time(60));
 
-        $this->Y = new YahooMa();
+        $this->Y = new YahooMa($this->SETTING->YAHOO_APP_ID);
 
         $this->T = new Twitter(
             $this->SETTING->KEY->consumer_key,

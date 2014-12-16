@@ -1,0 +1,8 @@
+{
+    "HOST":"localhost",
+    "PORT":"3306",
+    "DBNAME":"nise_bot",
+    "USER":"任意のDBユーザー名(Vagrantfileを利用する場合はnise_bot/incの名前と合わせる)",
+    "PASS":"任意のDBパスワード名",
+    "CHARSET":"utf8"
+}

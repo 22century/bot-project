@@ -1,8 +1,8 @@
 #!/bin/sh
 
-DIR_BOT="/任意のディレクトリ/bot-project"
+source `dirname $0`/define.sh
 
 cd ${DIR_BOT}
 
-nohup php nise_bot/main.php mybot1 tweet
-nohup php nise_bot/main.php mybot2 tweet
+nohup php nise_bot/main.php ${BOT_NAME1} tweet &> ${NOHUP_OUT} &
+#nohup php nise_bot/main.php ${BOT_NAME2} tweet &> ${NOHUP_OUT} &

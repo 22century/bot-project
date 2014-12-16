@@ -1,2 +1,5 @@
 .idea
+*.swp
+nohup.out
 node_modules/*
+log/*
