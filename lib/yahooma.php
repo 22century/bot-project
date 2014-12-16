@@ -40,10 +40,10 @@ class YahooMa
                     'Content-Length:'.strlen($query),
                     'User-Agent: Mozilla'
                 ]]];
-		try {
+        try {
             $contents = file_get_contents(self::YAHOOMA_URL, false, stream_context_create($options));
         } catch (Exception $e) {
-        	echo "YahooMA API通信失敗\n";
+            echo "YahooMA API通信失敗\n";
             exit($e->getMessage());
         }
 
@@ -157,7 +157,7 @@ class YahooMa
             $pos = $cur['pos'];
             $surface = trim(self::replaceSpace($cur['surface']));
             $reading = trim(self::replaceSpace($cur['reading']));
-            
+
             // 品詞名
             if (!isset($results[$pos])) {
                 $results[$pos] = [];
